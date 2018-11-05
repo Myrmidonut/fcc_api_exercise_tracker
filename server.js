@@ -5,17 +5,14 @@ const mongoose   = require('mongoose')
 
 const app = express()
 
-//mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
-mongoose.connect("mongodb://fred:fred1234@ds227481.mlab.com:27481/fcc_exercise_tracker");
+mongoose.connect(process.env.MLAB_URI);
 
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html')
-});
+app.get('/', (req, res) => res.sendFile(__dirname + '/views/index.html'));
 
 /*
 // Not found middleware
@@ -46,13 +43,11 @@ app.use((err, req, res, next) => {
 // Schema
 const userSchema = new mongoose.Schema({
   username: String,
-  exercise: [
-    {
-      description: String,
-      duration: Number,
-      date: String
-    }
-  ]
+  exercise: [{
+    description: String,
+    duration: Number,
+    date: String
+  }]
 });
 
 // model
@@ -65,7 +60,7 @@ app.post("/api/exercise/new-user", (req, res) => {
   const username = req.body.username;
   
   User.create({username: username}, (err, data) => {
-  //   User.create({username: username, exercise: [{description: null, duration: null, date: null}] }, function(err, data) {
+     //User.create({username: username, exercise: [{description: null, duration: null, date: null}] }, function(err, data) {
     if (err) console.log(err);
     else {
       User.findOne({username: username}).select("username _id").exec((err, data) => {
@@ -95,16 +90,21 @@ app.post("/api/exercise/add", function(req, res) {
   
   const newData = {
     description: description,
-    duration: duration, date: date
+    duration: duration,
+    date: date
   };
   
   User.findByIdAndUpdate(userId, {$push: {exercise: newData}}, {new: true}, (err, data) => {
     if (err) console.log(err);
-    else res.json({
-      "_id": data.id,
-      "username": data.username,
-      "exercise": newData
-    });
+    else {
+      res.json({
+        "_id": data.id,
+        "username": data.username,
+        "description": data.exercise[data.exercise.length - 1].description,
+        "duration": data.exercise[data.exercise.length - 1].duration,
+        "date": data.exercise[data.exercise.length - 1].date
+      })
+    }
   });
 });
 
@@ -130,32 +130,33 @@ app.get("/api/exercise/log", (req, res) => {
   const limit = req.query.limit;
   let exercisesFromTo = undefined;
   let exercisesFromToLimit = undefined;
-
+  
   User.findById(id, (err, data) => {
     if (err) console.log(err);
     else {
-      const exerciseCount = data.exercise.length;
+      let exerciseCount = data.exercise.length;
       exercisesFromTo = data.exercise;
       
-      if (from && to) {
+      if (from != undefined && to != undefined) {
         exercisesFromTo = data.exercise.filter(e => e.date >= from && e.date <= to);
-      } else if (from && !to) {
+      } else if (from != undefined && to == undefined) {
         exercisesFromTo = data.exercise.filter(e => e.date >= from);
-      } else if (!from && to) {
+      } else if (from == undefined && to != undefined) {
         exercisesFromTo = data.exercise.filter(e => e.date <= to);
       }
       
-      if (limit) {
+      if (limit != undefined) {
         exercisesFromToLimit = exercisesFromTo.slice(0, limit);
+        exerciseCount = limit;
       } else {
         exercisesFromToLimit = exercisesFromTo;
       }
-
+      
       res.json({
         "_id": data.id,
         "username": data.username,
-        "exercises": exercisesFromToLimit,
-        "Total Exercises": exerciseCount
+        "log": exercisesFromToLimit,
+        "count": exerciseCount
       });
     }
   });
