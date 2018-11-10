@@ -16,13 +16,6 @@ app.use(express.static('public'))
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/views/index.html'));
 
-/*
-// Not found middleware
-app.use((req, res, next) => {
-  return next({status: 404, message: 'not found'})
-})
-*/
-
 // Error Handling middleware
 app.use((err, req, res, next) => {
   let errCode, errMessage
@@ -55,14 +48,10 @@ const userSchema = new mongoose.Schema({
 // model
 const User = mongoose.model("User", userSchema);
 
-// POST username 
-// to /api/exercise/new-user
-// return object with username and _id
 app.post("/api/exercise/new-user", (req, res) => {
   const username = req.body.username;
   
   User.create({username: username}, (err, data) => {
-     //User.create({username: username, exercise: [{description: null, duration: null, date: null}] }, function(err, data) {
     if (err) console.log(err);
     else {
       User.findOne({username: username}).select("username _id").exec((err, data) => {
@@ -73,11 +62,7 @@ app.post("/api/exercise/new-user", (req, res) => {
   });
 });
 
-// POST exercise with: userId(_id), description, duration, and optionally date
-// empty date is replaced with current date
-// to /api/exercise/add
-// return object with all user data and only the added exercise data
-app.post("/api/exercise/add", function(req, res) {
+app.post("/api/exercise/add", (req, res) => {
   const userId = req.body.userId;
   const description = req.body.description;
   const duration = req.body.duration;
@@ -110,8 +95,6 @@ app.post("/api/exercise/add", function(req, res) {
   });
 });
 
-// GET /api/exercise/users
-// return array of all users with objects with username and _id
 app.get("/api/exercise/users", (req, res) => {
   User.find().select("username _id").exec((err, data) => {
     if (err) console.log(err);
@@ -119,19 +102,17 @@ app.get("/api/exercise/users", (req, res) => {
   })
 })
 
-// GET /api/exercise/log
-// /api/exercise/log?{userId}[&from][&to][&limit]
-// return object with all data and exercise counter
-// return exercises from ... to ... and limit to ... (Date format yyyy-mm-dd, limit = int)
-// "/api/exercise/log?:id(&:from)?(&:to)?(&:limit)?"
-// https://fcc-exercise-tracker-fred.glitch.me/api/exercise/log?userId=5b40f6de02d0e61805ff146c&from=2014-1-1&to=2018-12-12&limit=100
 app.get("/api/exercise/log", (req, res) => {
   const id = req.query.userId;
-  const from = req.query.from;
-  const to = req.query.to;
-  const limit = req.query.limit;
+  let from = req.query.from;
+  let to = req.query.to;
+  let limit = req.query.limit;
   let exercisesFromTo = undefined;
   let exercisesFromToLimit = undefined;
+  
+  if (from === "") from = undefined;
+  if (to  === "") to = undefined;
+  if (limit === "") limit = undefined;
   
   User.findById(id, (err, data) => {
     if (err) console.log(err);
@@ -139,15 +120,15 @@ app.get("/api/exercise/log", (req, res) => {
       let exerciseCount = data.exercise.length;
       exercisesFromTo = data.exercise;
       
-      if (from != undefined && to != undefined) {
+      if (from !== undefined && to !== undefined) {
         exercisesFromTo = data.exercise.filter(e => e.date >= from && e.date <= to);
-      } else if (from != undefined && to == undefined) {
+      } else if (from !== undefined && to === undefined) {
         exercisesFromTo = data.exercise.filter(e => e.date >= from);
-      } else if (from == undefined && to != undefined) {
+      } else if (from === undefined && to !== undefined) {
         exercisesFromTo = data.exercise.filter(e => e.date <= to);
       }
       
-      if (limit != undefined) {
+      if (limit !== undefined) {
         exercisesFromToLimit = exercisesFromTo.slice(0, limit);
         exerciseCount = limit;
       } else {

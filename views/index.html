@@ -3,16 +3,23 @@
   <head>
     <title>Exercise Tracker</title>
     
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
   </head>
 
   <body>
-    <div class="container">
-      <h2>API Project: Exercise Tracker</h2>
+    
+    <header class="container">
+      <h1>API Project: Exercise Tracker</h1>
+    </header>
+    
+    <main class="container">
       
-      <h3>User Stories:</h3>
+      <h2>User Stories:</h2>
       <ol class="user-stories">
         <li>I can create a user by posting form data <code>username</code> to <code>[base url]/api/exercise/new-user</code> and returned will be an object with <code>username</code> and <code>_id</code>.</li>
         <li>I can get an array of all users by getting <code>[base url]/api/exercise/users</code> with the same info as when creating a user.</li>
@@ -21,42 +28,52 @@
         <li>I can retrieve part of the log of any user by also passing along optional parameters of <code>from</code> & <code>to</code> or <code>limit</code>. (Date format yyyy-mm-dd, limit = int)</li>
       </ol>
       
-      <h3>API Interface:</h3>
-      <form action="/api/exercise/new-user" method="post">
-        <h3>Create a New User</h3>
-        <p><code>POST /api/exercise/new-user</code></p>
-        <input id="uname" type="text" name="username" placeholder="username">
-        <input type="submit" value="Submit">
-      </form>
-      
-      <form action="/api/exercise/add" method="post">
-        <h3>Add exercises</h3>
-        <p><code>POST /api/exercise/add</code></p>
-        <input id="uid" type="text" name="userId" placeholder="userId*">
-        <input id="desc" type="text" name="description" placeholder="description*">
-        <input id="dur" type="text" name="duration" placeholder="duration* (mins.)">
-        <input id="dat" type="text" name="date" placeholder="date (yyyy-mm-dd)">
-        <input type="submit" value="Submit">
-      </form>
-      
-      <p><strong>GET users's exercise log: </strong><code>GET /api/exercise/log?{userId}[&amp;from][&amp;to][&amp;limit]</code></p>
-      <p>
-        <strong>{ }</strong> = required <br>
-        <strong>[ ]</strong> = optional
-      </p>
-      <p>
-        <strong>from, to</strong> = dates (yyyy-mm-dd); <br>
-        <strong>limit</strong> = number
-      </p>
-      
       <hr>
-    
-      <div class="footer">
-        <p>
-          by <a href="https://github.com/Myrmidonut/fcc_api_exercise_tracker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
-        </p>
-      </div>
       
-    </div>
+      <h2>API:</h2>
+      <h3>Create user or exercise:</h3>
+      <form action="/api/exercise/new-user" method="post">
+        <h3>Create a new user</h3>
+        <p><code>POST /api/exercise/new-user</code></p>
+        <input id="uname" type="text" name="username" placeholder="Username *">
+        <input type="submit" value="Submit">
+      </form>
+      <form action="/api/exercise/add" method="post">
+        <h3>Add an exercise to a user</h3>
+        <p><code>POST /api/exercise/add</code></p>
+        <input id="uid" type="text" name="userId" placeholder="UserID *">
+        <input id="desc" type="text" name="description" placeholder="Description *">
+        <input id="dur" type="text" name="duration" placeholder="Duration (minutes) *">
+        <input id="dat" type="text" name="date" placeholder="Date (yyyy-mm-dd)">
+        <input type="submit" value="Submit">
+      </form>
+      <p>* Required Fields</p>
+      
+      <h3>Show users or exercises:</h3>
+      <form action="/api/exercise/users" method="get">
+        <h3>Show all users</h3>
+        <p><code>GET /api/exercise/users</code></p>
+        <input type="submit" value="Submit">
+      </form>
+      <form action="/api/exercise/log" method="get">
+        <h3>Show a users exercise log</h3>
+        <p><code>GET /api/exercise/log</code></p>
+        <input id="userId" type="text" name="userId" placeholder="UserID *">
+        <input id="from" type="text" name="from" placeholder="From (yyyy-mm-dd)">
+        <input id="to" type="text" name="to" placeholder="To (yyyy-mm-dd)">
+        <input id="limit" type="text" name="limit" placeholder="Limit (number)">
+        <input type="submit" value="Submit">
+      </form>
+      <p>* Required Fields</p>
+      
+    </main>
+      
+    <footer class="container">
+      <hr>
+      <p>
+        by <a href="https://github.com/Myrmidonut/fcc_api_exercise_tracker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
+      </p>
+    </footer>
+      
   </body>
 </html>
