@@ -14,7 +14,9 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.use(express.static('public'))
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/views/index.html'));
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/views/index.html')
+});
 
 // Error Handling middleware
 app.use((err, req, res, next) => {
@@ -56,7 +58,9 @@ app.post("/api/exercise/new-user", (req, res) => {
     else {
       User.findOne({username: username}).select("username _id").exec((err, data) => {
         if (err) console.log(err);
-        else res.json(data);
+        else {
+          res.json(data);
+        }
       });
     }
   });
@@ -98,7 +102,9 @@ app.post("/api/exercise/add", (req, res) => {
 app.get("/api/exercise/users", (req, res) => {
   User.find().select("username _id").exec((err, data) => {
     if (err) console.log(err);
-    else res.json(data);
+    else {
+      res.json(data);
+    }
   })
 })
 

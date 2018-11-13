@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
   </head>
@@ -18,13 +18,12 @@
     </header>
     
     <main class="container">
-      
       <h2>User Stories:</h2>
       <ol class="user-stories">
-        <li>I can create a user by posting form data <code>username</code> to <code>[base url]/api/exercise/new-user</code> and returned will be an object with <code>username</code> and <code>_id</code>.</li>
-        <li>I can get an array of all users by getting <code>[base url]/api/exercise/users</code> with the same info as when creating a user.</li>
-        <li>I can add an exercise to any user by posting form data <code>userId(_id)</code>, <code>description</code>, <code>duration</code>, and optionally <code>date</code> to <code>[base url]/api/exercise/add</code>. If no date is supplied it will use the current date. Returned will be the <code>user</code> object with the <code>exercise</code> fields added.</li>
-        <li>I can retrieve a full exercise log of any user by getting <code>[base url]/api/exercise/log</code> with a parameter of <code>userId(_id)</code>. Returned will be the <code>user</code> object with added array <code>log</code> and <code>count</code> (total exercise count).</li>
+        <li>I can create a user by posting form data <code>username</code> to <code>/api/exercise/new-user</code> and returned will be an object with <code>username</code> and <code>_id</code>.</li>
+        <li>I can get an array of all users by getting <code>/api/exercise/users</code> with the same info as when creating a user.</li>
+        <li>I can add an exercise to any user by posting form data <code>userId(_id)</code>, <code>description</code>, <code>duration</code>, and optionally <code>date</code> to <code>/api/exercise/add</code>. If no date is supplied it will use the current date. Returned will be the <code>user</code> object with the <code>exercise</code> fields added.</li>
+        <li>I can retrieve a full exercise log of any user by getting <code>/api/exercise/log</code> with a parameter of <code>userId(_id)</code>. Returned will be the <code>user</code> object with added array <code>log</code> and <code>count</code> (total exercise count).</li>
         <li>I can retrieve part of the log of any user by also passing along optional parameters of <code>from</code> & <code>to</code> or <code>limit</code>. (Date format yyyy-mm-dd, limit = int)</li>
       </ol>
       
@@ -65,7 +64,6 @@
         <input type="submit" value="Submit">
       </form>
       <p>* Required Fields</p>
-      
     </main>
       
     <footer class="container">
@@ -74,6 +72,6 @@
         by <a href="https://github.com/Myrmidonut/fcc_api_exercise_tracker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
       </p>
     </footer>
-      
+    
   </body>
 </html>
