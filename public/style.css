@@ -73,3 +73,7 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #FFFEC4;
 }
+
+h1 {
+  line-height: initial;
+}
